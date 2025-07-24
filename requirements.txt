@@ -1,0 +1,4 @@
+python-telegram-bot==22.2
+ffmpeg-python==0.2.0
+requests
+telegram
