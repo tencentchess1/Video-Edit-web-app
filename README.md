@@ -1,10 +1,10 @@
 # 🎬 Telegram Video Processing Bot
 
-A powerful Telegram bot that processes video files to change their digital fingerprint while maintaining visual quality. Perfect for making videos appear as fresh, original uploads with continuous GitHub Actions hosting.
+.
 
 ## ✨ Features
 
-- **🔄 Digital Fingerprint Modification**: Changes video encoding parameters to avoid duplicate detection
+
 - **🎯 5 Processing Methods**: Different techniques applied randomly for unpredictable results
 - **🎨 Quality Preservation**: Maintains visual quality while modifying technical parameters
 - **📤 Automatic Forwarding**: Sends processed videos to configured target group
