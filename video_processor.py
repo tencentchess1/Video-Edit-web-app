@@ -50,8 +50,8 @@ class VideoProcessor:
         try:
             self.last_method_used = "Bitrate Adjustment"
             
-            # Higher bitrate adjustment to increase file size
-            bitrate_values = ['3000k', '4000k', '5000k', '6000k', '8000k']
+            # Moderate bitrate adjustment for smaller size increase
+            bitrate_values = ['2000k', '2500k', '3000k', '3500k']
             selected_bitrate = random.choice(bitrate_values)
             
             # Process with ffmpeg with timeout
@@ -75,9 +75,9 @@ class VideoProcessor:
         try:
             self.last_method_used = "Codec Parameter Modification"
             
-            # Higher quality codec parameters to increase file size
-            crf_value = random.randint(15, 20)  # Lower CRF = higher quality = larger size
-            preset = random.choice(['slow', 'slower'])  # Better compression but larger files
+            # Moderate quality codec parameters for smaller size increase
+            crf_value = random.randint(18, 23)  # Moderate quality increase
+            preset = random.choice(['medium', 'fast'])  # Balanced compression
             
             # Process with ffmpeg with timeout
             cmd = [
@@ -109,7 +109,7 @@ class VideoProcessor:
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
                 '-profile:v', profile, '-level', level, '-c:a', 'aac', 
-                '-b:a', '256k', '-movflags', 'faststart', '-y', output_path
+                '-b:a', '192k', '-movflags', 'faststart', '-y', output_path
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -127,14 +127,14 @@ class VideoProcessor:
         try:
             self.last_method_used = "Quality Enhancement"
             
-            # Enhanced quality settings
-            crf_value = random.randint(12, 16)  # Very high quality
+            # Moderate quality settings
+            crf_value = random.randint(16, 20)  # Moderate quality increase
             
             # Process with ffmpeg with timeout
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
                 '-crf', str(crf_value), '-preset', 'slow', 
-                '-c:a', 'aac', '-b:a', '320k', '-y', output_path
+                '-c:a', 'aac', '-b:a', '224k', '-y', output_path
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
@@ -164,7 +164,7 @@ class VideoProcessor:
             # Process with ffmpeg with timeout
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
-                '-b:v', '4500k', '-c:a', 'aac', '-b:a', '256k'
+                '-b:v', '2800k', '-c:a', 'aac', '-b:a', '192k'
             ] + metadata + ['-y', output_path]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -189,8 +189,8 @@ class VideoProcessor:
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
                 '-vf', f'setpts={1/float(framerate_boost)}*PTS',
-                '-r', '30', '-b:v', '5000k', '-c:a', 'aac', 
-                '-b:a', '256k', '-y', output_path
+                '-r', '30', '-b:v', '3200k', '-c:a', 'aac', 
+                '-b:a', '192k', '-y', output_path
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
@@ -208,13 +208,13 @@ class VideoProcessor:
         try:
             self.last_method_used = "Audio Enhancement"
             
-            # Enhanced audio settings
-            audio_bitrate = random.choice(['320k', '384k', '448k'])
+            # Moderate audio settings
+            audio_bitrate = random.choice(['192k', '224k', '256k'])
             
             # Process with ffmpeg with timeout
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
-                '-b:v', '4000k', '-c:a', 'aac', '-b:a', audio_bitrate,
+                '-b:v', '2600k', '-c:a', 'aac', '-b:a', audio_bitrate,
                 '-ar', '48000', '-ac', '2', '-y', output_path
             ]
             

@@ -145,16 +145,29 @@ def download_video(download_id):
         base_name = os.path.splitext(file_info['original_name'])[0]
         download_name = f"{base_name}_processed.mp4"
         
-        # Schedule cleanup after successful download (longer delay)
+        # Create a copy of the file for safer downloads
+        download_dir = tempfile.mkdtemp(prefix='download_')
+        safe_download_path = os.path.join(download_dir, download_name)
+        import shutil
+        shutil.copy2(processed_path, safe_download_path)
+        
+        # Schedule cleanup after download (much longer delay)
         def schedule_cleanup():
             def cleanup_delayed():
                 import time
-                time.sleep(300)  # Wait 5 minutes before cleanup
-                if download_id in processed_files:
-                    temp_dir = processed_files[download_id]['temp_dir']
-                    cleanup_temp_files([temp_dir])
-                    del processed_files[download_id]
-                    logger.info(f"Cleaned up processed file: {download_id}")
+                time.sleep(600)  # Wait 10 minutes before cleanup
+                try:
+                    if os.path.exists(safe_download_path):
+                        os.remove(safe_download_path)
+                    if os.path.exists(download_dir):
+                        os.rmdir(download_dir)
+                    if download_id in processed_files:
+                        temp_dir = processed_files[download_id]['temp_dir']
+                        cleanup_temp_files([temp_dir])
+                        del processed_files[download_id]
+                        logger.info(f"Cleaned up processed file: {download_id}")
+                except Exception as e:
+                    logger.warning(f"Cleanup error: {e}")
             
             # Start cleanup timer in background
             cleanup_thread = threading.Thread(target=cleanup_delayed)
@@ -167,7 +180,7 @@ def download_video(download_id):
             schedule_cleanup()
         
         return send_file(
-            processed_path,
+            safe_download_path,
             as_attachment=True,
             download_name=download_name,
             mimetype='video/mp4'
