@@ -50,8 +50,8 @@ class VideoProcessor:
         try:
             self.last_method_used = "Bitrate Adjustment"
             
-            # Moderate bitrate adjustment for smaller size increase
-            bitrate_values = ['2000k', '2500k', '3000k', '3500k']
+            # Small bitrate adjustment for minimal size increase
+            bitrate_values = ['1800k', '2000k', '2200k', '2400k']
             selected_bitrate = random.choice(bitrate_values)
             
             # Process with ffmpeg with timeout
@@ -75,8 +75,8 @@ class VideoProcessor:
         try:
             self.last_method_used = "Codec Parameter Modification"
             
-            # Moderate quality codec parameters for smaller size increase
-            crf_value = random.randint(18, 23)  # Moderate quality increase
+            # Minimal quality codec parameters for small size increase
+            crf_value = random.randint(20, 25)  # Small quality increase
             preset = random.choice(['medium', 'fast'])  # Balanced compression
             
             # Process with ffmpeg with timeout
@@ -127,14 +127,14 @@ class VideoProcessor:
         try:
             self.last_method_used = "Quality Enhancement"
             
-            # Moderate quality settings
-            crf_value = random.randint(16, 20)  # Moderate quality increase
+            # Small quality settings
+            crf_value = random.randint(18, 22)  # Small quality increase
             
             # Process with ffmpeg with timeout
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
                 '-crf', str(crf_value), '-preset', 'slow', 
-                '-c:a', 'aac', '-b:a', '224k', '-y', output_path
+                '-c:a', 'aac', '-b:a', '192k', '-y', output_path
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
@@ -164,7 +164,7 @@ class VideoProcessor:
             # Process with ffmpeg with timeout
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
-                '-b:v', '2800k', '-c:a', 'aac', '-b:a', '192k'
+                '-b:v', '2200k', '-c:a', 'aac', '-b:a', '192k'
             ] + metadata + ['-y', output_path]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -189,7 +189,7 @@ class VideoProcessor:
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
                 '-vf', f'setpts={1/float(framerate_boost)}*PTS',
-                '-r', '30', '-b:v', '3200k', '-c:a', 'aac', 
+                '-r', '30', '-b:v', '2400k', '-c:a', 'aac', 
                 '-b:a', '192k', '-y', output_path
             ]
             
@@ -208,13 +208,13 @@ class VideoProcessor:
         try:
             self.last_method_used = "Audio Enhancement"
             
-            # Moderate audio settings
-            audio_bitrate = random.choice(['192k', '224k', '256k'])
+            # Low audio settings
+            audio_bitrate = random.choice(['160k', '192k', '224k'])
             
             # Process with ffmpeg with timeout
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
-                '-b:v', '2600k', '-c:a', 'aac', '-b:a', audio_bitrate,
+                '-b:v', '2000k', '-c:a', 'aac', '-b:a', audio_bitrate,
                 '-ar', '48000', '-ac', '2', '-y', output_path
             ]
             
