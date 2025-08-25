@@ -3,3 +3,8 @@ ffmpeg-python==0.2.0
 requests
 telegram
 python-dotenv
+ffmpeg-python
+python-dotenv
+python-telegram-bot
+requests
+telegram

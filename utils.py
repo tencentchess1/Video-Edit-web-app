@@ -2,7 +2,7 @@ import os
 import logging
 import tempfile
 import shutil
-from typing import List
+from typing import List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -15,12 +15,12 @@ def format_file_size(size_bytes: int) -> str:
     i = 0
     
     while size_bytes >= 1024 and i < len(size_names) - 1:
-        size_bytes /= 1024.0
+        size_bytes = size_bytes / 1024.0
         i += 1
         
     return f"{size_bytes:.1f} {size_names[i]}"
 
-def cleanup_temp_files(temp_dirs: List[str] = None):
+def cleanup_temp_files(temp_dirs: Optional[List[str]] = None):
     """Clean up temporary files and directories."""
     try:
         if temp_dirs:

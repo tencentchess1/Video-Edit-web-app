@@ -1,11 +1,11 @@
 modules = ["python-3.11"]
 
 [nix]
-channel = "stable-24_05"
-packages = ["ffmpeg-full"]
+channel = "stable-25_05"
+packages = ["ffmpeg-full", "ffmpeg"]
 
 [workflows]
-runButton = "Start Bot"
+runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"
@@ -15,6 +15,10 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "Install Dependencies"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Telegram Bot"
 
 [[workflows.workflow]]
 name = "Install Dependencies"
@@ -32,3 +36,17 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python start_bot.py"
+
+[[workflows.workflow]]
+name = "Telegram Bot"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python start_bot.py"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[agent]
+expertMode = true
