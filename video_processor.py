@@ -15,7 +15,11 @@ class VideoProcessor:
         self.processing_methods = [
             self._method_bitrate_adjust,
             self._method_codec_params,
-            self._method_compression_optimize
+            self._method_compression_optimize,
+            self._method_quality_enhance,
+            self._method_metadata_inject,
+            self._method_frame_duplicate,
+            self._method_audio_enhance
         ]
         
     async def process_video(self, input_path: str, temp_dir: str) -> Optional[str]:
@@ -46,8 +50,8 @@ class VideoProcessor:
         try:
             self.last_method_used = "Bitrate Adjustment"
             
-            # Simple bitrate adjustment without complex probing
-            bitrate_values = ['1000k', '1500k', '2000k', '2500k']
+            # Higher bitrate adjustment to increase file size
+            bitrate_values = ['3000k', '4000k', '5000k', '6000k', '8000k']
             selected_bitrate = random.choice(bitrate_values)
             
             # Process with ffmpeg with timeout
@@ -71,9 +75,9 @@ class VideoProcessor:
         try:
             self.last_method_used = "Codec Parameter Modification"
             
-            # Random codec parameters
-            crf_value = random.randint(18, 28)  # Quality factor
-            preset = random.choice(['fast', 'medium'])
+            # Higher quality codec parameters to increase file size
+            crf_value = random.randint(15, 20)  # Lower CRF = higher quality = larger size
+            preset = random.choice(['slow', 'slower'])  # Better compression but larger files
             
             # Process with ffmpeg with timeout
             cmd = [
@@ -97,14 +101,15 @@ class VideoProcessor:
         try:
             self.last_method_used = "Compression Optimization"
             
-            # Simple compression settings
-            profile = random.choice(['main', 'high'])
+            # High quality compression settings to increase file size
+            profile = 'high'
+            level = random.choice(['4.1', '4.2', '5.0'])
             
             # Process with ffmpeg with timeout
             cmd = [
                 'ffmpeg', '-i', input_path, '-c:v', 'libx264',
-                '-profile:v', profile, '-c:a', 'aac', 
-                '-movflags', 'faststart', '-y', output_path
+                '-profile:v', profile, '-level', level, '-c:a', 'aac', 
+                '-b:a', '256k', '-movflags', 'faststart', '-y', output_path
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
@@ -115,6 +120,112 @@ class VideoProcessor:
             return False
         except Exception as e:
             logger.error(f"Compression optimization failed: {str(e)}")
+            return False
+
+    async def _method_quality_enhance(self, input_path: str, output_path: str) -> bool:
+        """Method 4: Quality enhancement to increase file size."""
+        try:
+            self.last_method_used = "Quality Enhancement"
+            
+            # Enhanced quality settings
+            crf_value = random.randint(12, 16)  # Very high quality
+            
+            # Process with ffmpeg with timeout
+            cmd = [
+                'ffmpeg', '-i', input_path, '-c:v', 'libx264',
+                '-crf', str(crf_value), '-preset', 'slow', 
+                '-c:a', 'aac', '-b:a', '320k', '-y', output_path
+            ]
+            
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+            return result.returncode == 0
+            
+        except subprocess.TimeoutExpired:
+            logger.error("Quality enhancement timed out")
+            return False
+        except Exception as e:
+            logger.error(f"Quality enhancement failed: {str(e)}")
+            return False
+
+    async def _method_metadata_inject(self, input_path: str, output_path: str) -> bool:
+        """Method 5: Inject metadata to increase file size."""
+        try:
+            self.last_method_used = "Metadata Injection"
+            
+            # Add metadata to increase file size slightly
+            metadata = [
+                '-metadata', 'title=Processed Video',
+                '-metadata', 'artist=Video Processor',
+                '-metadata', 'album=Fingerprint Modified',
+                '-metadata', 'year=2025',
+                '-metadata', 'comment=Digital fingerprint modified for enhanced privacy'
+            ]
+            
+            # Process with ffmpeg with timeout
+            cmd = [
+                'ffmpeg', '-i', input_path, '-c:v', 'libx264',
+                '-b:v', '4500k', '-c:a', 'aac', '-b:a', '256k'
+            ] + metadata + ['-y', output_path]
+            
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+            return result.returncode == 0
+            
+        except subprocess.TimeoutExpired:
+            logger.error("Metadata injection timed out")
+            return False
+        except Exception as e:
+            logger.error(f"Metadata injection failed: {str(e)}")
+            return False
+
+    async def _method_frame_duplicate(self, input_path: str, output_path: str) -> bool:
+        """Method 6: Frame duplication technique to increase file size."""
+        try:
+            self.last_method_used = "Frame Processing"
+            
+            # Subtle frame processing to increase size
+            framerate_boost = random.choice(['1.05', '1.1', '1.15'])
+            
+            # Process with ffmpeg with timeout
+            cmd = [
+                'ffmpeg', '-i', input_path, '-c:v', 'libx264',
+                '-vf', f'setpts={1/float(framerate_boost)}*PTS',
+                '-r', '30', '-b:v', '5000k', '-c:a', 'aac', 
+                '-b:a', '256k', '-y', output_path
+            ]
+            
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+            return result.returncode == 0
+            
+        except subprocess.TimeoutExpired:
+            logger.error("Frame processing timed out")
+            return False
+        except Exception as e:
+            logger.error(f"Frame processing failed: {str(e)}")
+            return False
+
+    async def _method_audio_enhance(self, input_path: str, output_path: str) -> bool:
+        """Method 7: Audio enhancement to increase file size."""
+        try:
+            self.last_method_used = "Audio Enhancement"
+            
+            # Enhanced audio settings
+            audio_bitrate = random.choice(['320k', '384k', '448k'])
+            
+            # Process with ffmpeg with timeout
+            cmd = [
+                'ffmpeg', '-i', input_path, '-c:v', 'libx264',
+                '-b:v', '4000k', '-c:a', 'aac', '-b:a', audio_bitrate,
+                '-ar', '48000', '-ac', '2', '-y', output_path
+            ]
+            
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+            return result.returncode == 0
+            
+        except subprocess.TimeoutExpired:
+            logger.error("Audio enhancement timed out")
+            return False
+        except Exception as e:
+            logger.error(f"Audio enhancement failed: {str(e)}")
             return False
 
     def check_ffmpeg_installation(self) -> bool:
