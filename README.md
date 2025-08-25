@@ -1,114 +1,116 @@
-# 🎬 Telegram Video Processing Bot
 
-.
+# 🎬 Video Fingerprint Modifier
+
+A powerful video processing application that modifies digital fingerprints while preserving visual quality. Available as both a web application and Telegram bot.
 
 ## ✨ Features
 
-
-- **🎯 5 Processing Methods**: Different techniques applied randomly for unpredictable results
+- **🎯 7 Processing Methods**: Multiple techniques applied for unpredictable fingerprint modification
 - **🎨 Quality Preservation**: Maintains visual quality while modifying technical parameters
-- **📤 Automatic Forwarding**: Sends processed videos to configured target group
-- **📊 File Size Management**: Handles file size limits and optimization
-- **🚀 GitHub Actions Integration**: Runs 24/7 for free on GitHub Actions
+- **🌐 Web Interface**: User-friendly web app with drag-and-drop file upload
+- **🤖 Telegram Bot**: Process videos directly through Telegram
+- **📤 Automatic Forwarding**: Bot can forward processed videos to configured target group
+- **📊 File Size Management**: Handles files up to 50MB with optimization
 - **⚡ Instant Processing**: Fast video processing with real-time status updates
 
-## 🚀 Quick Setup
+## 🚀 Quick Setup on Replit
 
-### 1. Deploy to GitHub
-```bash
-# Clone or download this repository
-git clone https://github.com/YOUR_USERNAME/telegram-video-bot.git
-cd telegram-video-bot
+### 1. Fork this Repl
+Simply fork this Repl to get started immediately with all dependencies pre-installed.
 
-# Quick deploy (use provided script)
-./quick_deploy.sh
-```
+### 2. Run the Web Application
+Click the **Run** button to start the web interface at `https://your-repl-name.your-username.repl.co`
 
-### 2. Configure GitHub Secrets
-Go to your repository → Settings → Secrets and variables → Actions
+### 3. Configure Telegram Bot (Optional)
+For Telegram bot functionality:
+1. Get a bot token from [@BotFather](https://t.me/BotFather)
+2. Add your token to the Secrets tab:
+   - Key: `TELEGRAM_TOKEN`
+   - Value: Your bot token
+3. Optionally add `TARGET_GROUP_ID` for auto-forwarding
+4. Run the "Start Bot" workflow
 
-**Required:**
-- `TELEGRAM_TOKEN`: Your bot token from @BotFather
+## 💻 Usage
 
-**Optional:**
-- `TARGET_GROUP_ID`: Group ID for forwarding processed videos
+### Web Interface
+1. Open the web application
+2. Drag and drop or browse for a video file (up to 50MB)
+3. Click "Process Video"
+4. Download the processed video
 
-### 3. Enable GitHub Actions
-- Go to Actions tab → Enable workflows
-- Bot starts automatically and runs every 6 hours
-- Manual trigger available anytime
-
-## Usage
-
+### Telegram Bot
 1. Start a chat with your bot
-2. Send a video file (up to 50MB)
-3. Bot processes the video using one of 5 methods:
-   - Bitrate adjustment
-   - Framerate modification
-   - Resolution scaling
-   - Codec parameter changes
-   - Compression optimization
-4. Processed video is sent to your configured group (or back to you)
+2. Send a video file
+3. Receive the processed video automatically
 
-## Processing Methods
+## 🔧 Processing Methods
 
-### Method 1: Bitrate Adjustment
-Modifies video bitrate to 80-95% of original while maintaining quality.
+The application randomly selects from 7 different processing techniques:
 
-### Method 2: Framerate Modification
-Slightly adjusts framerate by ±5% (barely noticeable).
+1. **📊 Bitrate Adjustment** - High bitrate modification to increase file size
+2. **🎯 Codec Parameters** - Enhanced encoding parameters for larger output
+3. **🗜️ Compression Optimization** - Quality-focused compression settings
+4. **✨ Quality Enhancement** - Maximum quality settings for significant size increase
+5. **📝 Metadata Injection** - Adds metadata and properties to expand file size
+6. **🎬 Frame Processing** - Advanced frame techniques to boost file size
+7. **🔊 Audio Enhancement** - High-quality audio processing for larger files
 
-### Method 3: Resolution Scaling
-Scales resolution by 98-102% (imperceptible to human eye).
+## 🛠️ Development
 
-### Method 4: Codec Parameter Modification
-Changes H.264 encoding parameters (CRF, preset, profile).
-
-### Method 5: Compression Optimization
-Applies different compression settings and optimization flags.
-
-## GitHub Actions Workflows
-
-### Deploy Workflow (`deploy.yml`)
-- Runs on push to main branch
-- Installs dependencies and validates configuration
-- Tests FFmpeg installation
-
-### Run Bot Workflow (`run-bot.yml`)
-- Runs the bot continuously
-- Executes every 6 hours via cron schedule
-- Can be manually triggered
-- Includes automatic cleanup
-
-## Development
-
-### Local Development with Codespaces
-
-1. Open in GitHub Codespaces
-2. Environment automatically set up with FFmpeg and Python dependencies
-3. Set environment variables in terminal:
+### Local Development
+1. Install dependencies: `pip install python-telegram-bot ffmpeg-python`
+2. Set environment variables (if using Telegram bot):
    ```bash
    export TELEGRAM_TOKEN="your_bot_token"
    export TARGET_GROUP_ID="your_group_id"  # optional
    ```
-4. Run the bot:
-   ```bash
-   python bot.py
-   ```
+3. Run the web app: `python app.py`
+4. Run the bot: `python start_bot.py`
 
-### Manual Installation
+### File Structure
+```
+├── app.py              # Flask web application
+├── bot.py              # Telegram bot implementation
+├── video_processor.py  # Core video processing logic
+├── config.py           # Configuration management
+├── index.html          # Web interface
+├── style.css           # Web styling
+├── script.js           # Web functionality
+└── requirements.txt    # Python dependencies
+```
 
-```bash
-# Install system dependencies
-sudo apt-get update
-sudo apt-get install -y ffmpeg
+## 📋 Supported Formats
 
-# Install Python dependencies
-pip install -r requirements.txt
+**Input:** MP4, AVI, MOV, MKV, WMV, FLV
+**Output:** MP4 (optimized)
+**File Size:** Up to 50MB
 
-# Set environment variables
-export TELEGRAM_TOKEN="your_bot_token"
-export TARGET_GROUP_ID="your_group_id"  # optional
+## 🔒 Privacy & Security
 
-# Run the bot
-python bot.py
+- Files are processed locally and securely
+- No data is stored permanently
+- Automatic cleanup of temporary files
+- All processing happens on your Repl
+
+## 📚 Dependencies
+
+- **FFmpeg**: Video processing engine
+- **python-telegram-bot**: Telegram Bot API
+- **Flask**: Web framework
+- **ffmpeg-python**: Python FFmpeg bindings
+
+## 🚀 Deployment
+
+This application is optimized for Replit deployment:
+- Pre-configured with all necessary dependencies
+- FFmpeg installed and ready
+- Automatic port forwarding
+- Easy environment variable management through Secrets
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+---
+
+**Ready to get started?** Click the Run button and start processing your videos! 🎬
