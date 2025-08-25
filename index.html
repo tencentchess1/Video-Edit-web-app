@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Fingerprint Modifier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Video Fingerprint Modifier</h1>
+            <p>Upload a video file and we'll modify its digital fingerprint while preserving quality!</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <h3>Drop your video here or click to browse</h3>
+                    <p>Supports MP4, AVI, MOV, MKV, WMV, FLV (Max 50MB)</p>
+                    <input type="file" id="fileInput" accept="video/*" hidden>
+                    <button id="browseBtn" class="btn btn-primary">Choose File</button>
+                </div>
+            </div>
+
+            <div class="file-info" id="fileInfo" style="display: none;">
+                <h3>📄 File Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Name:</strong>
+                        <span id="fileName"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Size:</strong>
+                        <span id="fileSize"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Type:</strong>
+                        <span id="fileType"></span>
+                    </div>
+                </div>
+                <button id="processBtn" class="btn btn-success">🚀 Process Video</button>
+                <button id="clearBtn" class="btn btn-secondary">Clear</button>
+            </div>
+
+            <div class="processing" id="processing" style="display: none;">
+                <div class="loading-spinner"></div>
+                <h3>⚙️ Processing Your Video...</h3>
+                <p id="processingStatus">Initializing...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="result" id="result" style="display: none;">
+                <h3>✅ Processing Complete!</h3>
+                <div class="result-info">
+                    <div class="info-item">
+                        <strong>Original Size:</strong>
+                        <span id="originalSize"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Processed Size:</strong>
+                        <span id="processedSize"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Method Used:</strong>
+                        <span id="methodUsed"></span>
+                    </div>
+                </div>
+                <div class="download-section">
+                    <button id="downloadBtn" class="btn btn-success">⬇️ Download Processed Video</button>
+                    <button id="newVideoBtn" class="btn btn-primary">Process Another Video</button>
+                </div>
+            </div>
+
+            <div class="error" id="error" style="display: none;">
+                <h3>❌ Processing Error</h3>
+                <p id="errorMessage"></p>
+                <button id="retryBtn" class="btn btn-primary">Try Again</button>
+            </div>
+        </main>
+
+        <section class="features">
+            <h2>🔧 Processing Methods</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>📊 Bitrate Adjustment</h3>
+                    <p>Modifies video bitrate to change digital fingerprint</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 Codec Parameters</h3>
+                    <p>Adjusts encoding parameters and quality settings</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🗜️ Compression Optimization</h3>
+                    <p>Applies different compression profiles and optimization</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Your files are processed locally and securely. No data is stored or shared.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

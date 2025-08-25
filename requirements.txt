@@ -8,3 +8,5 @@ python-dotenv
 python-telegram-bot
 requests
 telegram
+flask
+werkzeug

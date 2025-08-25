@@ -2,7 +2,7 @@ modules = ["python-3.11"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["ffmpeg-full", "ffmpeg"]
+packages = ["ffmpeg", "ffmpeg-full"]
 
 [workflows]
 runButton = "Project"
@@ -18,7 +18,7 @@ args = "Install Dependencies"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Telegram Bot"
+args = "Video Web App"
 
 [[workflows.workflow]]
 name = "Install Dependencies"
@@ -38,15 +38,20 @@ task = "shell.exec"
 args = "python start_bot.py"
 
 [[workflows.workflow]]
-name = "Telegram Bot"
+name = "Video Web App"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python start_bot.py"
+args = "python app.py"
+waitForPort = 5000
 
 [workflows.workflow.metadata]
-outputType = "console"
+outputType = "webview"
 
 [agent]
 expertMode = true
+
+[[ports]]
+localPort = 5000
+externalPort = 80
