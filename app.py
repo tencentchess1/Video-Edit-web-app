@@ -145,22 +145,26 @@ def download_video(download_id):
         base_name = os.path.splitext(file_info['original_name'])[0]
         download_name = f"{base_name}_processed.mp4"
         
-        # Send file and clean up afterwards
-        def cleanup_after_send():
-            # Clean up in background thread after a delay
+        # Schedule cleanup after successful download (longer delay)
+        def schedule_cleanup():
             def cleanup_delayed():
                 import time
-                time.sleep(30)  # Wait 30 seconds before cleanup
+                time.sleep(300)  # Wait 5 minutes before cleanup
                 if download_id in processed_files:
                     temp_dir = processed_files[download_id]['temp_dir']
                     cleanup_temp_files([temp_dir])
                     del processed_files[download_id]
                     logger.info(f"Cleaned up processed file: {download_id}")
             
-            threading.Timer(0, cleanup_delayed).start()
+            # Start cleanup timer in background
+            cleanup_thread = threading.Thread(target=cleanup_delayed)
+            cleanup_thread.daemon = True
+            cleanup_thread.start()
         
-        # Schedule cleanup
-        cleanup_after_send()
+        # Only schedule cleanup after first download attempt
+        if 'cleanup_scheduled' not in file_info:
+            file_info['cleanup_scheduled'] = True
+            schedule_cleanup()
         
         return send_file(
             processed_path,
