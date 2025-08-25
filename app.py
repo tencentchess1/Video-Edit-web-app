@@ -132,24 +132,35 @@ def process_video():
 def download_video(download_id):
     """Handle video download requests."""
     try:
+        logger.info(f"Download requested for ID: {download_id}")
+        
         if download_id not in processed_files:
-            abort(404)
+            logger.error(f"Download ID not found: {download_id}")
+            return jsonify({'success': False, 'error': 'File not found or expired'}), 404
         
         file_info = processed_files[download_id]
         processed_path = file_info['path']
         
         if not os.path.exists(processed_path):
-            abort(404)
+            logger.error(f"Processed file not found: {processed_path}")
+            return jsonify({'success': False, 'error': 'Processed file no longer exists'}), 404
         
         # Generate download filename
         base_name = os.path.splitext(file_info['original_name'])[0]
         download_name = f"{base_name}_processed.mp4"
+        
+        logger.info(f"Starting download: {download_name} ({format_file_size(os.path.getsize(processed_path))})")
         
         # Create a copy of the file for safer downloads
         download_dir = tempfile.mkdtemp(prefix='download_')
         safe_download_path = os.path.join(download_dir, download_name)
         import shutil
         shutil.copy2(processed_path, safe_download_path)
+        
+        # Verify the copy was successful
+        if not os.path.exists(safe_download_path):
+            logger.error(f"Failed to create download copy: {safe_download_path}")
+            return jsonify({'success': False, 'error': 'Failed to prepare download'}), 500
         
         # Schedule cleanup after download (much longer delay)
         def schedule_cleanup():
@@ -183,7 +194,7 @@ def download_video(download_id):
             safe_download_path,
             as_attachment=True,
             download_name=download_name,
-            mimetype='video/mp4'
+            mimetype='application/octet-stream'
         )
         
     except Exception as e:

@@ -214,20 +214,41 @@ class VideoProcessor {
         if (!this.processedData) return;
 
         try {
+            this.downloadBtn.disabled = true;
+            this.downloadBtn.textContent = '⬇️ Downloading...';
+            
             const response = await fetch(`/api/download/${this.processedData.download_id}`);
-            if (!response.ok) throw new Error('Download failed');
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+            }
 
             const blob = await response.blob();
+            
+            if (blob.size === 0) {
+                throw new Error('Downloaded file is empty');
+            }
+            
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `processed_${this.currentFile.name}`;
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
+            
+            // Cleanup
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }, 100);
+            
         } catch (error) {
+            console.error('Download error:', error);
             this.showError(`Download failed: ${error.message}`);
+        } finally {
+            this.downloadBtn.disabled = false;
+            this.downloadBtn.textContent = '⬇️ Download Processed Video';
         }
     }
 
